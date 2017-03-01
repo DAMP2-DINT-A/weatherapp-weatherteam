@@ -12,7 +12,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         OpenWeatherManager op = new OpenWeatherManager();
-        op.getWeatherByLatLon(35,139);
+        op.getWeatherByZip(28007,"ES");
     }
 
 

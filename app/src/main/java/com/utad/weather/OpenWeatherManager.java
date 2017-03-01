@@ -34,31 +34,33 @@ public class OpenWeatherManager {
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
-                        try {
-                            JSONArray weather = response.getJSONArray("weather");
-                            JSONObject obj = (JSONObject) weather.get(0);
-                            String main = obj.get("main").toString();
-                            String description = obj.get("description").toString();
+                            try {
+                                JSONArray weather = response.getJSONArray("weather");
+                                JSONObject obj = (JSONObject) weather.get(0);
+                                String main = obj.get("main").toString();
+                                String description = obj.get("description").toString();
 
 
-                            JSONObject objMain = response.getJSONObject("main");
-                            String temperature = objMain.get("temp").toString();
-                            String pressure = objMain.get("pressure").toString();
-                            String humidity = objMain.get("humidity").toString();
+                                JSONObject objMain = response.getJSONObject("main");
+                                String temperature = objMain.get("temp").toString();
+                                String pressure = objMain.get("pressure").toString();
+                                String humidity = objMain.get("humidity").toString();
 
 
-                            JSONObject objWind = response.getJSONObject("wind");
-                            String speed = objWind.get("speed").toString();
-                            String deg = objWind.get("deg").toString();
+                                JSONObject objWind = response.getJSONObject("wind");
+                                String speed = objWind.get("speed").toString();
+                                String deg = objWind.get("deg").toString();
 
 
-                            JSONObject objSys = response.getJSONObject("wind");
-                            String sunrise = objSys.get("speed").toString();
-                            String sunset = objSys.get("deg").toString();
+                                JSONObject objSys = response.getJSONObject("sys");
+                                String sunrise = objSys.get("sunrise").toString();
+                                String sunset = objSys.get("sunset").toString();
 
-                            Log.d(TAG, "Descripcion " + main + description + temperature + pressure + humidity + speed + deg + sunrise + sunset);
+                                String name = response.get("name").toString();
 
-                        } catch (JSONException e) {
+                                Log.d(TAG, "Main " + main + " description: "+ description + " temperature: "+ temperature + " pressure: "+ pressure + " humidity: "+ humidity + " speed: "+ speed + " deg: "+ deg + " sunrise: "+ sunrise + " sunset: "+ sunset+ " name: "+name);
+
+                            } catch (JSONException e) {
                             e.printStackTrace();
                         }
 
@@ -80,12 +82,112 @@ public class OpenWeatherManager {
     public void getWeatherByZip(int zip, String countryCode){
         url = url + "zip="+zip+","+countryCode+ApiKey;
         Log.d("Query",""+ url);
+        JsonObjectRequest jsArrayRequest = new JsonObjectRequest(
+                Request.Method.GET,
+                url,
+                null,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        try {
+                            JSONArray weather = response.getJSONArray("weather");
+                            JSONObject obj = (JSONObject) weather.get(0);
+                            String main = obj.get("main").toString();
+                            String description = obj.get("description").toString();
+
+
+                            JSONObject objMain = response.getJSONObject("main");
+                            String temperature = objMain.get("temp").toString();
+                            String pressure = objMain.get("pressure").toString();
+                            String humidity = objMain.get("humidity").toString();
+
+
+                            JSONObject objWind = response.getJSONObject("wind");
+                            String speed = objWind.get("speed").toString();
+                            String deg = objWind.get("deg").toString();
+
+
+                            JSONObject objSys = response.getJSONObject("sys");
+                            String sunrise = objSys.get("sunrise").toString();
+                            String sunset = objSys.get("sunset").toString();
+
+                            String name = response.get("name").toString();
+
+                            Log.d(TAG, "Main " + main + " description: "+ description + " temperature: "+ temperature + " pressure: "+ pressure + " humidity: "+ humidity + " speed: "+ speed + " deg: "+ deg + " sunrise: "+ sunrise + " sunset: "+ sunset+ " name: "+name);
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.d(TAG, "Error Respuesta en JSON: " + error.getMessage());
+
+                    }
+                }
+        );
+
+        WeatherApplication.requestQueue.add(jsArrayRequest);
 
     }
 
     public void getWeatherByName(String cityName){
         url = url + "q="+cityName+ApiKey;
         Log.d("Query",""+ url);
+        JsonObjectRequest jsArrayRequest = new JsonObjectRequest(
+                Request.Method.GET,
+                url,
+                null,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        try {
+                            JSONArray weather = response.getJSONArray("weather");
+                            JSONObject obj = (JSONObject) weather.get(0);
+                            String main = obj.get("main").toString();
+                            String description = obj.get("description").toString();
+
+
+                            JSONObject objMain = response.getJSONObject("main");
+                            String temperature = objMain.get("temp").toString();
+                            String pressure = objMain.get("pressure").toString();
+                            String humidity = objMain.get("humidity").toString();
+
+
+                            JSONObject objWind = response.getJSONObject("wind");
+                            String speed = objWind.get("speed").toString();
+                            String deg = objWind.get("deg").toString();
+
+
+                            JSONObject objSys = response.getJSONObject("sys");
+                            String sunrise = objSys.get("sunrise").toString();
+                            String sunset = objSys.get("sunset").toString();
+
+                            String name = response.get("name").toString();
+
+                            Log.d(TAG, "Main " + main + " description: "+ description + " temperature: "+ temperature + " pressure: "+ pressure + " humidity: "+ humidity + " speed: "+ speed + " deg: "+ deg + " sunrise: "+ sunrise + " sunset: "+ sunset+ " name: "+name);
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.d(TAG, "Error Respuesta en JSON: " + error.getMessage());
+
+                    }
+                }
+        );
+
+        WeatherApplication.requestQueue.add(jsArrayRequest);
     }
 
 
