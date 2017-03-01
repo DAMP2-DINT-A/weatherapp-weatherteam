@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+    <solid android:color="@color/colorPrimary_light"/>
+    <padding
+        android:left="16dp"
+        android:right="16dp"
+        android:top="4dp"
+        android:bottom="4dp"/>
+    <corners
+        android:radius="7dp"/>
+
+
+    <gradient
+        android:angle="225"
+        android:endColor="@color/colorPrimary_light"
+        android:startColor="@color/colorPrimary"
+        android:type="linear" />
+
+</shape>
