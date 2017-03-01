@@ -22,6 +22,7 @@ import org.json.JSONObject;
  */
 public class OpenWeatherManager {
 
+    private  WeatherResponse weatherResult;
 
     private String url =  "http://api.openweathermap.org/data/2.5/weather?";
 
@@ -50,7 +51,8 @@ public class OpenWeatherManager {
         getWeatherByUrl(url);
     }
 
-    private void getWeatherByUrl(String url) {
+    private WeatherResponse getWeatherByUrl(String url) {
+
         JsonObjectRequest jsArrayRequest = new JsonObjectRequest(
                 Request.Method.GET,
                 url,
@@ -115,7 +117,7 @@ public class OpenWeatherManager {
                             String name = response.get("name").toString();
                             long  cod = Long.parseLong(response.get("name").toString());
 
-                            WeatherResponse weatherResult = new WeatherResponse(coord, weather,base,main, wind, clouds, dt, sys,id, name, cod);
+                            weatherResult = new WeatherResponse(coord, weather,base,main, wind, clouds, dt, sys,id, name, cod);
 
                             Log.d(TAG, "Main " + main + " description: "+ description + " temperature: "+ temperature + " pressure: "+ pressure + " humidity: "+ humidity + " speed: "+ speed + " deg: "+ deg + " sunrise: "+ sunrise + " sunset: "+ sunset+ " name: "+name);
 
@@ -136,6 +138,8 @@ public class OpenWeatherManager {
         );
 
         WeatherApplication.requestQueue.add(jsArrayRequest);
+
+        return weatherResult;
     }
 
 
