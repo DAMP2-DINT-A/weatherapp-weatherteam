@@ -6,6 +6,12 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.utad.weather.data.Coords;
+import com.utad.weather.data.Main;
+import com.utad.weather.data.Sys;
+import com.utad.weather.data.Weather;
+import com.utad.weather.data.WeatherResponse;
+import com.utad.weather.data.Wind;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -27,117 +33,24 @@ public class OpenWeatherManager {
     public void getWeatherByLatLon (double lat, double lon){
         url = url + "lat="+lat+"&lon="+lon+ApiKey;
         Log.d("Query",""+ url);
-        JsonObjectRequest jsArrayRequest = new JsonObjectRequest(
-                Request.Method.GET,
-                url,
-                null,
-                new Response.Listener<JSONObject>() {
-                    @Override
-                    public void onResponse(JSONObject response) {
-                            try {
-                                JSONArray weather = response.getJSONArray("weather");
-                                JSONObject obj = (JSONObject) weather.get(0);
-                                String main = obj.get("main").toString();
-                                String description = obj.get("description").toString();
-
-
-                                JSONObject objMain = response.getJSONObject("main");
-                                String temperature = objMain.get("temp").toString();
-                                String pressure = objMain.get("pressure").toString();
-                                String humidity = objMain.get("humidity").toString();
-
-
-                                JSONObject objWind = response.getJSONObject("wind");
-                                String speed = objWind.get("speed").toString();
-                                String deg = objWind.get("deg").toString();
-
-
-                                JSONObject objSys = response.getJSONObject("sys");
-                                String sunrise = objSys.get("sunrise").toString();
-                                String sunset = objSys.get("sunset").toString();
-
-                                String name = response.get("name").toString();
-
-                                Log.d(TAG, "Main " + main + " description: "+ description + " temperature: "+ temperature + " pressure: "+ pressure + " humidity: "+ humidity + " speed: "+ speed + " deg: "+ deg + " sunrise: "+ sunrise + " sunset: "+ sunset+ " name: "+name);
-
-                            } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-
-
-                    }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        Log.d(TAG, "Error Respuesta en JSON: " + error.getMessage());
-
-                    }
-                }
-        );
-
-        WeatherApplication.requestQueue.add(jsArrayRequest);
+        getWeatherByUrl(url);
     }
+
 
     public void getWeatherByZip(int zip, String countryCode){
         url = url + "zip="+zip+","+countryCode+ApiKey;
         Log.d("Query",""+ url);
-        JsonObjectRequest jsArrayRequest = new JsonObjectRequest(
-                Request.Method.GET,
-                url,
-                null,
-                new Response.Listener<JSONObject>() {
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        try {
-                            JSONArray weather = response.getJSONArray("weather");
-                            JSONObject obj = (JSONObject) weather.get(0);
-                            String main = obj.get("main").toString();
-                            String description = obj.get("description").toString();
-
-
-                            JSONObject objMain = response.getJSONObject("main");
-                            String temperature = objMain.get("temp").toString();
-                            String pressure = objMain.get("pressure").toString();
-                            String humidity = objMain.get("humidity").toString();
-
-
-                            JSONObject objWind = response.getJSONObject("wind");
-                            String speed = objWind.get("speed").toString();
-                            String deg = objWind.get("deg").toString();
-
-
-                            JSONObject objSys = response.getJSONObject("sys");
-                            String sunrise = objSys.get("sunrise").toString();
-                            String sunset = objSys.get("sunset").toString();
-
-                            String name = response.get("name").toString();
-
-                            Log.d(TAG, "Main " + main + " description: "+ description + " temperature: "+ temperature + " pressure: "+ pressure + " humidity: "+ humidity + " speed: "+ speed + " deg: "+ deg + " sunrise: "+ sunrise + " sunset: "+ sunset+ " name: "+name);
-
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-
-
-                    }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        Log.d(TAG, "Error Respuesta en JSON: " + error.getMessage());
-
-                    }
-                }
-        );
-
-        WeatherApplication.requestQueue.add(jsArrayRequest);
+        getWeatherByUrl(url);
 
     }
 
     public void getWeatherByName(String cityName){
         url = url + "q="+cityName+ApiKey;
         Log.d("Query",""+ url);
+        getWeatherByUrl(url);
+    }
+
+    private void getWeatherByUrl(String url) {
         JsonObjectRequest jsArrayRequest = new JsonObjectRequest(
                 Request.Method.GET,
                 url,
@@ -146,28 +59,63 @@ public class OpenWeatherManager {
                     @Override
                     public void onResponse(JSONObject response) {
                         try {
-                            JSONArray weather = response.getJSONArray("weather");
-                            JSONObject obj = (JSONObject) weather.get(0);
-                            String main = obj.get("main").toString();
-                            String description = obj.get("description").toString();
 
+                            JSONObject objCoord = response.getJSONObject("coord");
+                            String lon = objCoord.get("lon").toString();
+                            String lat = objCoord.get("lat").toString();
+                            float fLon =  Float.parseFloat(lon);
+                            float fLat = Float.parseFloat(lat);
+
+                            Coords coord = new Coords(fLat,fLon);
+
+                            JSONArray jsWeather = response.getJSONArray("weather");
+                            JSONObject obj = (JSONObject) jsWeather.get(0);
+                            int idWeather = Integer.parseInt(obj.get("id").toString());
+                            String sMain = obj.get("main").toString();
+                            String description = obj.get("description").toString();
+                            String icon = obj.get("icon").toString();
+
+                            Weather weather = new Weather(idWeather, sMain, description, icon);
+
+                            String base = response.get("base").toString();
 
                             JSONObject objMain = response.getJSONObject("main");
-                            String temperature = objMain.get("temp").toString();
-                            String pressure = objMain.get("pressure").toString();
-                            String humidity = objMain.get("humidity").toString();
+                            double temperature =  Double.parseDouble(objMain.get("temp").toString());
+                            Long pressure = Long.parseLong(objMain.get("pressure").toString());
+                            double humidity =  Double.parseDouble(objMain.get("humidity").toString());
+                            double tempMin =  Double.parseDouble(objMain.get("temp_min").toString());
+                            double tempMax =  Double.parseDouble(objMain.get("temp_max").toString());
 
+                            Main main = new Main(temperature,pressure, humidity, tempMin, tempMax);
+
+                            String visibility = response.get("visibility").toString();
 
                             JSONObject objWind = response.getJSONObject("wind");
-                            String speed = objWind.get("speed").toString();
-                            String deg = objWind.get("deg").toString();
+                            float speed = Float.parseFloat(objWind.get("speed").toString());
+                            int deg = Integer.parseInt(objWind.get("deg").toString());
 
+                            Wind wind = new Wind(speed, deg);
+
+                            JSONObject objClouds = response.getJSONObject("clouds");
+                            float clouds = Float.parseFloat(objClouds.get("all").toString());
+
+                            long dt = Long.parseLong(response.get("dt").toString());
 
                             JSONObject objSys = response.getJSONObject("sys");
-                            String sunrise = objSys.get("sunrise").toString();
-                            String sunset = objSys.get("sunset").toString();
+                            int type = Integer.parseInt(objSys.get("type").toString());
+                            long idsys = Long.parseLong(objSys.get("id").toString());
+                            float message = Float.parseFloat(objSys.get("message").toString());
+                            String country = objSys.get("country").toString();
+                            long sunrise = Long.parseLong(objSys.get("sunrise").toString());
+                            long sunset = Long.parseLong(objSys.get("sunset").toString());
 
+                            Sys sys = new Sys(type, idsys, message, country, sunrise, sunset);
+
+                            long id = Long.parseLong(response.get("name").toString());
                             String name = response.get("name").toString();
+                            long  cod = Long.parseLong(response.get("name").toString());
+
+                            WeatherResponse weatherResult = new WeatherResponse(coord, weather,base,main, wind, clouds, dt, sys,id, name, cod);
 
                             Log.d(TAG, "Main " + main + " description: "+ description + " temperature: "+ temperature + " pressure: "+ pressure + " humidity: "+ humidity + " speed: "+ speed + " deg: "+ deg + " sunrise: "+ sunrise + " sunset: "+ sunset+ " name: "+name);
 
@@ -189,6 +137,7 @@ public class OpenWeatherManager {
 
         WeatherApplication.requestQueue.add(jsArrayRequest);
     }
+
 
 
 }

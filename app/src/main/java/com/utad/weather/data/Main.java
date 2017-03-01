@@ -9,17 +9,15 @@ public class Main {
     private double humidity; // Humidity, %
     private double temp_min; // Minimum temperature at the moment. This is deviation from current temp that is possible for large cities and megalopolises geographically expanded (use these parameter optionally). Unit Default: Kelvin, Metric: Celsius, Imperial: Fahrenheit.
     private double temp_max; // Maximum temperature at the moment. This is deviation from current temp that is possible for large cities and megalopolises geographically expanded (use these parameter optionally). Unit Default: Kelvin, Metric: Celsius, Imperial: Fahrenheit.
-    private long sea_level; // Atmospheric pressure on the sea level, hPa
-    private long grnd_level; // Atmospheric pressure on the ground level, hPa
 
-    public Main(double temp, long pressure, double humidity, double temp_min, double temp_max, long sea_level, long grnd_level) {
+
+    public Main(double temp, long pressure, double humidity, double temp_min, double temp_max) {
         this.temp = temp;
         this.pressure = pressure;
         this.humidity = humidity;
         this.temp_min = temp_min;
         this.temp_max = temp_max;
-        this.sea_level = sea_level;
-        this.grnd_level = grnd_level;
+
     }
 
     public double getTemp() {
@@ -62,19 +60,4 @@ public class Main {
         this.temp_max = temp_max;
     }
 
-    public long getSea_level() {
-        return sea_level;
-    }
-
-    public void setSea_level(long sea_level) {
-        this.sea_level = sea_level;
-    }
-
-    public long getGrnd_level() {
-        return grnd_level;
-    }
-
-    public void setGrnd_level(long grnd_level) {
-        this.grnd_level = grnd_level;
-    }
 }
