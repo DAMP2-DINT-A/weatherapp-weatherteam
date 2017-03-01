@@ -57,6 +57,7 @@ public class OpenWeatherManager {
                     }
                 }
         );
+
         WeatherApplication.requestQueue.add(jsArrayRequest);
     }
 
