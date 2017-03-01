@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center"
+    android:background="#B3E5FC">
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:background="#0288D1">
+
+        <TextView
+            android:id="@+id/day"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="LUNES"
+            android:textAlignment="center"
+            android:textColor="#FFFFFF"
+            android:paddingTop="9dp"/>
+
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="75dp"
+            android:layout_height="100dp"
+            android:src="@drawable/icon08"
+            android:paddingTop="15dp"
+            android:paddingBottom="15dp"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"/>
+
+
+        <TextView
+            android:id="@+id/tempC"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="20ºC"
+            android:textAlignment="center"
+            android:textColor="#FFFFFF"/>
+
+        <TextView
+            android:id="@+id/tempF"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="71.6ºF"
+            android:textAlignment="center"
+            android:textColor="#FFFFFF"
+            android:paddingBottom="9dp"/>
+
+    </LinearLayout>
+
+</LinearLayout>
