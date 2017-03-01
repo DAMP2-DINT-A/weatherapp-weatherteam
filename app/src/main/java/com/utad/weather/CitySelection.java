@@ -7,9 +7,14 @@ import android.text.TextWatcher;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
+
+import com.utad.weather.data.Weather;
+import com.utad.weather.data.WeatherResult;
 
 import java.util.ArrayList;
 
@@ -58,7 +63,11 @@ public class CitySelection extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.action_favorite) {
             System.out.println();
-            cp = postalCode.getText().toString();
+            //cp = postalCode.getText().toString();
+            if (cp.length() == 4) {
+                WeatherResult weatherResult = new WeatherResult(-1, null, Long.parseLong(postalCode.getText().toString()), null, 1);
+                weatherResult.save();
+            }
         }
         return super.onOptionsItemSelected(item);
     }
@@ -71,8 +80,9 @@ public class CitySelection extends AppCompatActivity {
         return super.onCreateOptionsMenu(menu);
     }
 
+
     public void changeAdapter(CharSequence charSequence) {
-        ArrayList<String> str = new ArrayList();
+        final ArrayList<String> str = new ArrayList();
         for (int i = 0; i < provincias.length; i++) {
             if (provincias[i].contains(charSequence)) {
                 System.out.println(provincias[i]);
@@ -83,5 +93,13 @@ public class CitySelection extends AppCompatActivity {
         System.out.println("FINALIZADO ADAPTER");
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, str);
         lista.setAdapter(adapter);
+        lista.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                System.out.println(str.get(i));
+                WeatherResult weather = new WeatherResult(-1,null,0,str.get(i),1);
+                weather.save();
+            }
+        });
     }
 }
