@@ -13,46 +13,65 @@ import java.util.HashMap;
 @Table(name = "Weather")
 public class Weather extends Model {
     @Column(name = "coords")
-    private HashMap<String, Float> coords = new HashMap<String, Float>();
-    @Column(name = "country")
-    private HashMap country = new HashMap();
+    private Coords coords;
     @Column(name = "weather")
-    private HashMap weather = new HashMap();
+    private HashMap weather;
+    /*
+    Inside the weather HashMap:
+        weather.id: Weather condition id
+        weather.main: Group of weather parameters (Rain, Snow, Extreme etc.)
+        weather.description: Weather condition within the group
+        weather.icon: Weather icon id
+     */
+    @Column(name = "base")
+    private String base; // May be null, Internal parameter
     @Column(name = "main")
-    private HashMap<String, Float> main = new HashMap<String, Float>();
+    private Main main;
     @Column(name = "wind")
-    private HashMap<String, Float> wind = new HashMap<String, Float>();
-    @Column(name = "rain")
-    private HashMap<String, Float> rain = new HashMap<String, Float>();
+    private Wind wind;
     @Column(name = "clouds")
-    private HashMap<String, Float> clouds = new HashMap<String, Float>();
+    private float clouds; // Cloudiness, %
+    @Column(name = "rain")
+    private float rain; // rain.3h: Rain volume for the last 3 hours
+    @Column(name = "snow")
+    private float snow; // snow.3h: Snow volume for the last 3 hours
     @Column(name = "dt")
-    private long dt;
-    @Column(name = "id")
-    private long idWeather;
+    private long dt; // Time of data calculation, unix, UTC
+    @Column(name = "sys")
+    private Sys sys;
+    @Column(name = "idCity")
+    private long idCity; // City ID
     @Column(name = "name")
-    private String name;
+    private String name; // City name
     @Column(name = "cod")
-    private long cod;
+    private long cod; // Internal parameter
 
     public Weather(){
         super();
     }
 
-    public HashMap<String, Float> getCoords() {
+    public Weather(Coords coords, HashMap weather, String base, Main main, Wind wind, float clouds, float rain, float snow, long dt, Sys sys, long idCity, String name, long cod) {
+        this.coords = coords;
+        this.weather = weather;
+        this.base = base;
+        this.main = main;
+        this.wind = wind;
+        this.clouds = clouds;
+        this.rain = rain;
+        this.snow = snow;
+        this.dt = dt;
+        this.sys = sys;
+        this.idCity = idCity;
+        this.name = name;
+        this.cod = cod;
+    }
+
+    public Coords getCoords() {
         return coords;
     }
 
-    public void setCoords(HashMap<String, Float> coords) {
+    public void setCoords(Coords coords) {
         this.coords = coords;
-    }
-
-    public HashMap getCountry() {
-        return country;
-    }
-
-    public void setCountry(HashMap country) {
-        this.country = country;
     }
 
     public HashMap getWeather() {
@@ -63,36 +82,52 @@ public class Weather extends Model {
         this.weather = weather;
     }
 
-    public HashMap<String, Float> getMain() {
+    public String getBase() {
+        return base;
+    }
+
+    public void setBase(String base) {
+        this.base = base;
+    }
+
+    public Main getMain() {
         return main;
     }
 
-    public void setMain(HashMap<String, Float> main) {
+    public void setMain(Main main) {
         this.main = main;
     }
 
-    public HashMap<String, Float> getWind() {
+    public Wind getWind() {
         return wind;
     }
 
-    public void setWind(HashMap<String, Float> wind) {
+    public void setWind(Wind wind) {
         this.wind = wind;
     }
 
-    public HashMap<String, Float> getRain() {
-        return rain;
-    }
-
-    public void setRain(HashMap<String, Float> rain) {
-        this.rain = rain;
-    }
-
-    public HashMap<String, Float> getClouds() {
+    public float getClouds() {
         return clouds;
     }
 
-    public void setClouds(HashMap<String, Float> clouds) {
+    public void setClouds(float clouds) {
         this.clouds = clouds;
+    }
+
+    public float getRain() {
+        return rain;
+    }
+
+    public void setRain(float rain) {
+        this.rain = rain;
+    }
+
+    public float getSnow() {
+        return snow;
+    }
+
+    public void setSnow(float snow) {
+        this.snow = snow;
     }
 
     public long getDt() {
@@ -103,12 +138,20 @@ public class Weather extends Model {
         this.dt = dt;
     }
 
-    public long getIdWeather() {
-        return idWeather;
+    public Sys getSys() {
+        return sys;
     }
 
-    public void setId(long id) {
-        this.idWeather = id;
+    public void setSys(Sys sys) {
+        this.sys = sys;
+    }
+
+    public long getIdCity() {
+        return idCity;
+    }
+
+    public void setIdCity(long idCity) {
+        this.idCity = idCity;
     }
 
     public String getName() {
