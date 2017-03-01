@@ -53,6 +53,7 @@
                     android:text="14 KM/H SW"
                     android:padding="10sp"
                     android:gravity="center"
+                    android:textStyle="normal|bold"
                     android:id="@+id/tvViento" />
 
             </LinearLayout>
