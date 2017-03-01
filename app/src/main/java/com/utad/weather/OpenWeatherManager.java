@@ -36,11 +36,27 @@ public class OpenWeatherManager {
                     public void onResponse(JSONObject response) {
                         try {
                             JSONArray weather = response.getJSONArray("weather");
-                            for (int i = 0; i < weather.length(); i++){
-                                JSONObject obj = (JSONObject) weather.get(i);
-                                String descripcion = obj.get("description").toString();
-                                Log.d(TAG, "Descripcion " + descripcion);
-                            }
+                            JSONObject obj = (JSONObject) weather.get(0);
+                            String main = obj.get("main").toString();
+                            String description = obj.get("description").toString();
+
+
+                            JSONObject objMain = response.getJSONObject("main");
+                            String temperature = objMain.get("temp").toString();
+                            String pressure = objMain.get("pressure").toString();
+                            String humidity = objMain.get("humidity").toString();
+
+
+                            JSONObject objWind = response.getJSONObject("wind");
+                            String speed = objWind.get("speed").toString();
+                            String deg = objWind.get("deg").toString();
+
+
+                            JSONObject objSys = response.getJSONObject("wind");
+                            String sunrise = objSys.get("speed").toString();
+                            String sunset = objSys.get("deg").toString();
+
+                            Log.d(TAG, "Descripcion " + main + description + temperature + pressure + humidity + speed + deg + sunrise + sunset);
 
                         } catch (JSONException e) {
                             e.printStackTrace();
