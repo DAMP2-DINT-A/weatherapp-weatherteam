@@ -1,17 +1,14 @@
 package com.utad.weather.data;
 
-import com.activeandroid.Model;
 import com.activeandroid.annotation.Column;
 import com.activeandroid.annotation.Table;
-
-import java.util.HashMap;
 
 /**
  * Created by alvaro.montes on 01/03/2017.
  */
 
 @Table(name = "Weather")
-public class WeatherResponse extends Model {
+public class WeatherResponse {
     @Column(name = "coords")
     private Coords coords;
     @Column(name = "weather")

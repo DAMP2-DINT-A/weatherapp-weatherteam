@@ -113,9 +113,9 @@ public class OpenWeatherManager {
 
                             Sys sys = new Sys(type, idsys, message, country, sunrise, sunset);
 
-                            long id = Long.parseLong(response.get("name").toString());
+                            long id = Long.parseLong(response.get("id").toString());
                             String name = response.get("name").toString();
-                            long  cod = Long.parseLong(response.get("name").toString());
+                            long  cod = Long.parseLong(response.get("cod").toString());
 
                             weatherResult = new WeatherResponse(coord, weather,base,main, wind, clouds, dt, sys,id, name, cod);
 
